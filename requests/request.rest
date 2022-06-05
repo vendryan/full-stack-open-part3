@@ -5,3 +5,37 @@ DELETE http://localhost:3001/api/persons/2
 
 ###
 GET http://localhost:3001/api/persons/2
+
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "venven",
+    "number": "39589475"
+}
+
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "Arto Hellas",
+    "number": "39589475"
+}
+
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "Venven"
+}
+
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "number": "8357984"
+}
