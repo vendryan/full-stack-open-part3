@@ -4,6 +4,7 @@ const app = express()
 
 morgan.token('reqbody', (request, response) => JSON.stringify(request.body))
 
+app.use(express.static('build'))
 // JSON parser
 app.use(express.json())
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :reqbody'))
