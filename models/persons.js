@@ -5,7 +5,7 @@ const url = process.env.MONGODB_URI
 console.log('connecting to', url)
 
 mongoose.connect(url)
-  .then(success => {
+  .then(() => {
     console.log('connected to MongoDB')
   })
   .catch(error =>{
@@ -21,16 +21,16 @@ const personSchema = new mongoose.Schema({
     type: String,
     validate: {
       validator: (v) => {
-        return (v.length >= 8) && (/\d{2,3}-\d+/.test(v) || /^\d+$/.test(v))  
+        return (v.length >= 8) && (/\d{2,3}-\d+/.test(v) || /^\d+$/.test(v))
       },
       message: (props) => {
         if (props.value.length < 8) {
-          return `The number length must be at least 8`
+          return 'The number length must be at least 8'
         }
         else {
-          return (`if formed two parts seperated by - then first part have to ` + 
-                  `consist of 2 or 3 number and the second also have ` + 
-                  `to consist of number`)
+          return ('if formed two parts seperated by - then first part have to ' +
+                  'consist of 2 or 3 number and the second also have ' +
+                  'to consist of number')
         }
       }
     }

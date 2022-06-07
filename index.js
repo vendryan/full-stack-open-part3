@@ -4,41 +4,18 @@ const morgan = require('morgan')
 const Person = require('./models/persons')
 const app = express()
 
-morgan.token('reqbody', (request, response) => JSON.stringify(request.body))
+morgan.token('reqbody', (request) => JSON.stringify(request.body))
 
 app.use(express.static('build'))
 // JSON parser
 app.use(express.json())
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :reqbody'))
 
-let persons = [
-  { 
-    id: 1,
-    name: "Arto Hellas", 
-    number: "040-123456"
-  },
-  { 
-    id: 2,
-    name: "Ada Lovelace", 
-    number: "39-44-5323523"
-  },
-  { 
-    id: 3,
-    name: "Dan Abramov", 
-    number: "12-43-234345"
-  },
-  { 
-    id: 4,
-    name: "Mary Poppendieck", 
-    number: "39-23-6423122"
-  }
-]
-
 app.get('/info', async (request, response) => {
   const time = new Date()
   const personCount = await Person.find({}).countDocuments().exec()
 
-  response.send(`<div>Phone book has info for ${personCount} people</div>` + 
+  response.send(`<div>Phone book has info for ${personCount} people</div>` +
                 `<div>${time}</div>`)
 })
 
@@ -56,14 +33,14 @@ app.get('/api/persons', (request, response, next) => {
     .find({})
     .then(persons => {
       response.json(persons)
-    }) 
+    })
     .catch(error => next(error))
 })
 
 app.post('/api/persons', (request, response, next) => {
   const body = request.body
   if (!body.name || !body.number) {
-    return response.status(400).json({ error: "name or number is missing" })
+    return response.status(400).json({ error: 'name or number is missing' })
   }
 
   const person = new Person ({
@@ -96,7 +73,7 @@ app.put('/api/persons/:id', (request,response, next) => {
 app.delete('/api/persons/:id', (request, response, next) => {
   Person
     .findByIdAndDelete(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
