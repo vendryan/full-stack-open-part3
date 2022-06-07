@@ -37,9 +37,11 @@ let persons = [
 // DON'T FORGET TO CONVERT ID TO INTEGER
 // I FORGET EVERYTIME
 
-app.get('/info', (request, response) => {
+app.get('/info', async (request, response) => {
   const time = new Date()
-  response.send(`<div>Phone book has info for ${persons.length} people</div>` + 
+  const personCount = await Person.find({}).countDocuments().exec()
+
+  response.send(`<div>Phone book has info for ${personCount} people</div>` + 
                 `<div>${time}</div>`)
 })
 
@@ -75,6 +77,21 @@ app.post('/api/persons', (request, response) => {
   person.save().then(savedPerson => {
     response.json(savedPerson)
   })
+})
+
+app.put('/api/persons/:id', (request,response, next) => {
+  const body = request.body
+  const person = {
+    name: body.name,
+    number: body.number
+  }
+
+  Person
+    .findByIdAndUpdate(request.params.id, person, { new: true })
+    .then(updatedPerson => {
+      response.json(updatedPerson)
+    })
+    .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
