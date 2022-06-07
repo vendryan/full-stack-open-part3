@@ -17,7 +17,24 @@ const personSchema = new mongoose.Schema({
     type: String,
     minLength: 3
   },
-  number: String
+  number: {
+    type: String,
+    validate: {
+      validator: (v) => {
+        return (v.length >= 8) && (/\d{2,3}-\d+/.test(v) || /^\d+$/.test(v))  
+      },
+      message: (props) => {
+        if (props.value.length < 8) {
+          return `The number length must be at least 8`
+        }
+        else {
+          return (`if formed two parts seperated by - then first part have to ` + 
+                  `consist of 2 or 3 number and the second also have ` + 
+                  `to consist of number`)
+        }
+      }
+    }
+  }
 })
 
 personSchema.set('toJSON', {
