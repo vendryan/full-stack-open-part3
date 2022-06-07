@@ -14,7 +14,7 @@ if (process.argv.length === 3 || process.argv.length === 5) {
   if (process.argv.length === 3) {
     mongoose
       .connect(url)
-      .then((result) => {
+      .then(() => {
         return Person.find({})
       })
       .then(result => {
@@ -29,14 +29,14 @@ if (process.argv.length === 3 || process.argv.length === 5) {
 
     mongoose
       .connect(url)
-      .then((result) => {
+      .then(() => {
         const person = new Person({
           name: name,
           number: number
         })
         return person.save()
       })
-      .then(result => {
+      .then(() => {
         console.log(`added ${name} number ${number} to phonebook`)
         mongoose.connection.close()
       })
